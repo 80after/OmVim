@@ -47,7 +47,7 @@
     " }
 " }
 "
-call plug#begin('~/.config/nvim/bundle')
+call plug#begin('~/.vim/bundle')
 
 " Plugs {
         let g:spf13_bundle_groups=['general' , 'writing', 'programming' , 'python',  'youcompleteme',]

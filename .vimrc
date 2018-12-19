@@ -69,8 +69,8 @@
 " Use before config if available {
 
         " Use bundles config {
-        if filereadable(expand("~/.config/nvim/init.vim.bundles"))
-            source ~/.config/nvim/init.vim.bundles
+        if filereadable(expand("~/.vimrc.bundles"))
+            source ~/.vimrc.bundles
         endif
 " }
 
@@ -161,7 +161,7 @@
 
 " Vim UI {
 
-        if !exists('g:override_spf13_bundles') && filereadable(expand("~/.config/nvim/bundle/vim-colors-solarized/colors/solarized.vim"))
+        if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
             let g:solarized_termcolors=256
             let g:solarized_termtrans=1
             let g:solarized_contrast="normal"
@@ -364,13 +364,13 @@
 
 " Plugins {
     " LeaderF {
-            if isdirectory(expand("~/.config/nvim/bundle/LeaderF/"))
+            if isdirectory(expand("~/.vim/bundle/LeaderF/"))
                 let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 
                 let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
                 let g:Lf_WorkingDirectoryMode = 'Ac'
                 let g:Lf_WindowHeight = 0.30
-                let g:Lf_CacheDirectory = expand('~/.config/nvim/cache')
+                let g:Lf_CacheDirectory = expand('~/.cache')
                 let g:Lf_ShowRelativePath = 0
                 let g:Lf_HideHelp = 1
                 let g:Lf_StlColorscheme = 'powerline'
@@ -379,15 +379,15 @@
                 let g:Lf_ShortcutF = '<c-p>'
                 let g:Lf_ShortcutB = '<m-n>'
                 noremap <c-n> :LeaderfMru<cr>
-                noremap <A-p> :LeaderfFunction!<cr>
-                noremap <A-n> :LeaderfBuffer<cr>
-                noremap <A-m> :LeaderfTag<cr>
+                noremap <m-p> :LeaderfFunction!<cr>
+                noremap <m-n> :LeaderfBuffer<cr>
+                noremap <m-m> :LeaderfTag<cr>
 
             endif
        "}
 
     " w0rp/ale {
-        if isdirectory(expand("~/.config/nvim/bundle/ale"))
+        if isdirectory(expand("~/.vim/bundle/ale"))
             " 对应语言需要安装相应的检查工具
             " https://github.com/w0rp/ale
             "    let g:ale_linters_explicit = 1 "除g:ale_linters指定，其他不可用
@@ -422,7 +422,7 @@
     " }
 
     " vim-gutentags {
-        if isdirectory(expand("~/.config/nvim/bundle/vim-gutentags"))
+        if isdirectory(expand("~/.vim/bundle/vim-gutentags"))
             "keymap	    desc
             "<leader>cs	Find symbol (reference) under cursor
             "<leader>cg	Find symbol definition under cursor
@@ -461,7 +461,7 @@
             endif
 
             " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-            let g:gutentags_cache_dir = expand('~/.config/nvim/cache/tags')
+            let g:gutentags_cache_dir = expand('~/.cache/tags')
 
             " 配置 ctags 的参数
             let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
@@ -506,7 +506,7 @@
     " }
 
     " NerdTree {
-        if isdirectory(expand("~/.config/nvim/bundle/nerdtree"))
+        if isdirectory(expand("~/.vim/bundle/nerdtree"))
 
             let g:nerdtree_tabs_open_on_gui_startup=0
             let g:NERDShutUp=1
@@ -525,7 +525,7 @@
     " }
 
     " Tabularize {
-        if isdirectory(expand("~/.config/nvim/bundle/tabular"))
+        if isdirectory(expand("~/.vim/bundle/tabular"))
             nmap <leader>a& :Tabularize /&<CR>
             vmap <leader>a& :Tabularize /&<CR>
             nmap <leader>a= :Tabularize /^[^=]*\zs=<CR>
@@ -556,8 +556,8 @@
             let g:pymode = 0
         endif
 
-        if isdirectory(expand("~/.config/nvim/bundle/python-mode"))
-            let g:pymode_python = 'python3'
+        if isdirectory(expand("~/.vim/bundle/python-mode"))
+            "let g:pymode_python = 'python3'
             let g:pymode_lint_checkers = ['pyflakes']
             let g:pymode_trim_whitespaces = 0
             let g:pymode_options = 0
@@ -572,7 +572,7 @@
             let g:ycm_confirm_extra_conf=0
             " enable completion from tags
             let g:ycm_collect_identifiers_from_tags_files = 1
-            let g:ycm_global_ycm_extra_conf = '~/.config/nvim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+            let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
             "设置全局Python路径
             let g:ycm_server_python_interpreter='/usr/bin/python3'
             " remap Ultisnips for compatibility for YCM
@@ -602,15 +602,15 @@
     " }
 
     " UndoTree {
-        if isdirectory(expand("~/.config/nvim/bundle/undotree/"))
-            nnoremap <leader>u :UndotreeToggle<CR>
+        if isdirectory(expand("~/.vim/bundle/undotree/"))
+            nnoremap <leader>u :UndotreeToggle<CR
             " If undotree is opened, it is likely one wants to interact with it.
             let g:undotree_SetFocusWhenToggle=1
         endif
     " }
 
     " indent_guides {
-        if isdirectory(expand("~/.config/nvim/bundle/vim-indent-guides/"))
+        if isdirectory(expand("~/.vim/bundle/vim-indent-guides/"))
             let g:indent_guides_start_level = 2
             let g:indent_guides_guide_size = 1
             let g:indent_guides_enable_on_vim_startup = 1
@@ -646,7 +646,7 @@
 
     " Initialize directories {
     function! InitializeDirectories()
-        let parent = $HOME . '/.config/nvim'
+        let parent = $HOME
         let prefix = 'vim'
         let dir_list = {
                     \ 'backup': 'backupdir',
@@ -720,14 +720,14 @@
     endfunction
      
     function! s:EditSpf13Config()
-        call <SID>ExpandFilenameAndExecute("tabedit", "~/.config/nvim/init.vim")
-        Call <SID>ExpandFilenameAndExecute("vsplit", "~/.config/nvim/init.vim.bundles")
+        call <SID>ExpandFilenameAndExecute("tabedit", "~/.vimrc")
+        Call <SID>ExpandFilenameAndExecute("vsplit", "~/.vimrc.bundles")
      
-        execute bufwinnr(".config/nvim/init.vim") . "wincmd w"
+        execute bufwinnr("~/.vimrc") . "wincmd w"
 
     endfunction
      
     execute "noremap " . s:spf13_edit_config_mapping " :call <SID>EditSpf13Config()<CR>"
-    execute "noremap " . s:spf13_apply_config_mapping . " :source ~/.config/nvim/init.vim<CR>"
+    execute "noremap " . s:spf13_apply_config_mapping . " :source ~/.vimrc<CR>"
 " }
 

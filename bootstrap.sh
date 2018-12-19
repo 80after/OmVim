@@ -18,7 +18,7 @@
 app_name='OmVim'
 [ -z "$APP_PATH" ] && APP_PATH="$HOME/.OmVim"
 [ -z "$REPO_URI" ] && REPO_URI='https://github.com/smallstar01/OmVim.git'
-[ -z "$REPO_BRANCH" ] && REPO_BRANCH='nvim'
+[ -z "$REPO_BRANCH" ] && REPO_BRANCH='master'
 debug_mode='0'
 [ -z "$VIMPLUG_URI" ] && VIMPLUG_URI="https://github.com/junegunn/vim-plug.git"
 
@@ -120,9 +120,14 @@ create_symlinks() {
     local source_path="$1"
     local target_path="$2"
 
-    lnif "$source_path/.vim"           	   "$target_path/.config/nvim"
-    lnif "$source_path/init.vim"	   "$target_path/.config/nvim/init.vim"
-    lnif "$source_path/init.vim.bundles"   "$target_path/.config/nvim/init.vim.bundles"
+    lnif "$source_path/.vimrc"         "$target_path/.vimrc"
+    lnif "$source_path/.vimrc.bundles" "$target_path/.vimrc.bundles"
+    lnif "$source_path/.vim"           "$target_path/.vim"
+
+    if program_exists "nvim"; then
+        lnif "$source_path/.vim"       "$target_path/.config/nvim"
+        lnif "$source_path/.vimrc"     "$target_path/.config/nvim/init.vim"
+    fi
 
     ret="$?"
     success "Setting up vim symlinks."
@@ -134,7 +139,7 @@ setup_vundle() {
     local system_shell="$SHELL"
     export SHELL='/bin/sh'
 
-    nvim \
+    vim \
         -u "$1" \
         "+set nomore" \
         "+PlugInstall!" \
@@ -148,11 +153,12 @@ setup_vundle() {
 
 ############################ MAIN()
 variable_set "$HOME"
-program_must_exist "nvim"
+program_must_exist "vim"
 program_must_exist "git"
 
-do_backup       "$HOME/.config/nvim" \
-                "$HOME/.config/nvim/init.vim" 
+do_backup       "$HOME/.vim" \
+                "$HOME/.vimrc" \
+                "$HOME/.gvimrc"
 
 sync_repo       "$APP_PATH" \
                 "$REPO_URI" \
@@ -162,12 +168,12 @@ sync_repo       "$APP_PATH" \
 create_symlinks "$APP_PATH" \
                 "$HOME"
 
-sync_repo       "$HOME/.config/nvim/autoload" \
+sync_repo       "$HOME/.vim/autoload" \
                 "$VIMPLUG_URI" \
                 "master" \
                 "vim-plug"
 
-setup_vundle    "$APP_PATH/init.vim.bundles"
+setup_vundle    "$APP_PATH/.vimrc.bundles"
 
 msg             "\nThanks for installing $app_name."
 msg             "© `date +%Y` http://vim.spf13.com/"
