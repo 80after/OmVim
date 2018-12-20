@@ -89,9 +89,6 @@
         endfunction
         noremap <leader>bg :call ToggleBG()<CR>
 
-        " if !has('gui')
-            "set term=$TERM          " Make arrow and other keys work
-        " endif
         syntax on                   " Syntax highlighting
         set mouse=a                 " Automatically enable mouse usage
         set mousehide               " Hide the mouse cursor while typing
@@ -105,8 +102,7 @@
             endif
         endif
 
-
-        "set autowrite                       " Automatically write a file when leaving a modified buffer
+        set autowrite                       " Automatically write a file when leaving a modified buffer
         set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
         set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
         set virtualedit=onemore             " Allow for cursor beyond last character
@@ -160,13 +156,16 @@
 " }
 
 " Vim UI {
-
-        if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+        if  filereadable(expand("~/.vim/bundle/vim-color-solarized/colors/solarized.vim"))
             let g:solarized_termcolors=256
             let g:solarized_termtrans=1
             let g:solarized_contrast="normal"
             let g:solarized_visibility="normal"
-            color solarized             " Load a colorscheme
+            color solarized              " Load a colorscheme
+        endif
+
+        if  filereadable(expand("~/.vim/bundle/gruvbox/colors/gruvbox.vim"))
+            color gruvbox              " Load a colorscheme
         endif
 
         set noshowmode                  " Hidden the current mode
@@ -291,16 +290,6 @@
             vnoremap ^ :<C-U>call WrapRelativeMotion("^", 1)<CR>
         endif
 
-        " The following two lines conflict with moving to top and
-        " bottom of the screen
-        " If you prefer that functionality, add the following to your
-        " .vimrc.before.local file:
-        "   let g:spf13_no_fastTabs = 1
-        if !exists('g:spf13_no_fastTabs')
-            map <S-H> gT
-            map <S-L> gt
-        endif
-
         " Stupid shift key fixes
         if !exists('g:spf13_no_keyfixes')
             if has("user_commands")
@@ -390,34 +379,33 @@
         if isdirectory(expand("~/.vim/bundle/ale"))
             " 对应语言需要安装相应的检查工具
             " https://github.com/w0rp/ale
-            "    let g:ale_linters_explicit = 1 "除g:ale_linters指定，其他不可用
-            "    let g:ale_linters = {
-            "\   'cpp': ['cppcheck','clang','gcc'],
-            "\   'c': ['cppcheck','clang', 'gcc'],
-            "\   'python': ['pylint'],
-            "\   'bash': ['shellcheck'],
-            "\   'go': ['golint'],
-            "\}
-            "
+            let g:ale_linters_explicit = 1 "除g:ale_linters指定，其他不可用
+            let g:ale_linters = {
+            \   'cpp': ['cppcheck'],
+            \   'c': ['cppcheck'],
+            \   'python': ['flake8'],
+            \   'bash': ['shellcheck'],
+            \}
+            let g:ale_fixers = {
+            \   'cpp': ['clang-format'],
+            \   'c': ['clang-format'],
+            \   'python': ['autopep8'],
+            \}
+
             let g:ale_sign_column_always = 1
-            let g:ale_completion_delay = 500
             let g:ale_echo_delay = 20
             let g:ale_lint_delay = 500
             let g:ale_echo_msg_format = '[%linter%] %code: %%s'
             let g:ale_lint_on_text_changed = 'normal'
             let g:ale_lint_on_insert_leave = 1
-            "let g:airline#extensions#ale#enabled = 1
-            "let g:ale_set_quickfix = 1
-            "let g:ale_open_list = 1"打开quitfix对话框
-
-            let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-            let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++11'
-            let g:ale_c_cppcheck_options = ''
-            let g:ale_cpp_cppcheck_options = ''
-
+            let g:airline#extensions#ale#enabled = 1
+			
             let g:ale_sign_error = ">>"
-            let g:ale_sign_warning = "--"
+            let g:ale_sign_warning = "!"
+
             map <F7> ::ALEToggle<CR>
+            " Bind F8 to fixing problems with ALE
+            nmap <F8> <Plug>(ale_fix)
         endif
     " }
 
@@ -436,7 +424,7 @@
 
             "let g:gutentags_define_advanced_commands = 1
             "自动载入ctags gtags
-            let $GTAGSLABEL = 'native'
+            let $GTAGSLABEL = 'native-pygments'
             let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
 
             " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
@@ -520,7 +508,6 @@
 
             map <C-e> <plug>NERDTreeTabsToggle<CR>
             map <leader>e :NERDTreeFind<CR>
-            nmap <leader>nt :NERDTreeFind<CR>
         endif
     " }
 
@@ -545,19 +532,9 @@
         endif
     " }
 
-    " JSON {
-        nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
-        let g:vim_json_syntax_conceal = 0
-    " }
-
     " PyMode {
-        " Disable if python support not present
-        if !has('python') && !has('python3')
-            let g:pymode = 0
-        endif
-
         if isdirectory(expand("~/.vim/bundle/python-mode"))
-            "let g:pymode_python = 'python3'
+            let g:pymode_python = 'python3'
             let g:pymode_lint_checkers = ['pyflakes']
             let g:pymode_trim_whitespaces = 0
             let g:pymode_options = 0
@@ -572,7 +549,7 @@
             let g:ycm_confirm_extra_conf=0
             " enable completion from tags
             let g:ycm_collect_identifiers_from_tags_files = 1
-            let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+            "let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
             "设置全局Python路径
             let g:ycm_server_python_interpreter='/usr/bin/python3'
             " remap Ultisnips for compatibility for YCM
@@ -603,7 +580,7 @@
 
     " UndoTree {
         if isdirectory(expand("~/.vim/bundle/undotree/"))
-            nnoremap <leader>u :UndotreeToggle<CR
+            nnoremap <leader>u :UndotreeToggle<CR>
             " If undotree is opened, it is likely one wants to interact with it.
             let g:undotree_SetFocusWhenToggle=1
         endif
@@ -721,7 +698,7 @@
      
     function! s:EditSpf13Config()
         call <SID>ExpandFilenameAndExecute("tabedit", "~/.vimrc")
-        Call <SID>ExpandFilenameAndExecute("vsplit", "~/.vimrc.bundles")
+        call <SID>ExpandFilenameAndExecute("vsplit", "~/.vimrc.bundles")
      
         execute bufwinnr("~/.vimrc") . "wincmd w"
 

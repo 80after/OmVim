@@ -59,14 +59,14 @@ call plug#begin('~/.vim/bundle')
         if count(g:spf13_bundle_groups, 'general')
             Plug 'scrooloose/nerdtree',{ 'on': '<plug>NERDTreeTabsToggle' }
             Plug 'jistr/vim-nerdtree-tabs'
-            Plug 'altercation/vim-colors-solarized'
+            "Plug 'altercation/vim-colors-solarized'
+            Plug 'morhetz/gruvbox'
             Plug 'tpope/vim-surround'                 "成对的符号增删改
-            Plug 'tpope/vim-repeat'
-            Plug 'jiangmiao/auto-pairs'
+            Plug 'jiangmiao/auto-pairs'               "自动括号补全
             Plug 'Yggdroot/LeaderF'
             Plug 'vim-airline/vim-airline'
-            Plug 'easymotion/vim-easymotion'
-            Plug 'mbbill/undotree',{ 'on': 'UndotreeToggle' }
+            Plug 'easymotion/vim-easymotion'        " 快速跳转
+            Plug 'mbbill/undotree',{ 'on': 'UndotreeToggle' } "撤销恢复树
             Plug 'Yggdroot/indentLine'   " 缩进对齐线
         endif
     " }
@@ -83,10 +83,10 @@ call plug#begin('~/.vim/bundle')
     " General Programming {
         if count(g:spf13_bundle_groups, 'programming')
             Plug 'w0rp/ale',{ 'on': 'ALEToggle' }   " 实时语法检查
-            Plug 'ludovicchabant/vim-gutentags' 
-            Plug 'skywind3000/gutentags_plus' 
-            Plug 'skywind3000/vim-preview' 
-            Plug 'godlygeek/tabular'
+            Plug 'ludovicchabant/vim-gutentags'     " tags管理
+            Plug 'skywind3000/gutentags_plus'       " 项目自动切换tags
+            Plug 'skywind3000/vim-preview'          " 预览
+            Plug 'godlygeek/tabular'                " 对齐
         endif
     " }
 
@@ -100,7 +100,7 @@ call plug#begin('~/.vim/bundle')
 
    " Python {
         if count(g:spf13_bundle_groups, 'python')
-            Plug 'python-mode/python-mode', { 'branch': 'develop', 'for': ['py','python'] }
+            "Plug 'python-mode/python-mode', { 'branch': 'develop', 'for': ['py','python'] }
         endif
     " }
 
