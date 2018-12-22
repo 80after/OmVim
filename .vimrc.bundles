@@ -50,7 +50,7 @@
 call plug#begin('~/.vim/bundle')
 
 " Plugs {
-        let g:spf13_bundle_groups=['general' , 'writing', 'programming' , 'python',  'youcompleteme',]
+        let g:spf13_bundle_groups=['general' , 'programming' , 'python',  'youcompleteme',]
 
     " To override all the included bundles, add the following to your
     " .vimrc.bundles.local file:
@@ -59,8 +59,7 @@ call plug#begin('~/.vim/bundle')
         if count(g:spf13_bundle_groups, 'general')
             Plug 'scrooloose/nerdtree',{ 'on': '<plug>NERDTreeTabsToggle' }
             Plug 'jistr/vim-nerdtree-tabs'
-            "Plug 'altercation/vim-colors-solarized'
-            Plug 'morhetz/gruvbox'
+            Plug 'w0ng/vim-hybrid'
             Plug 'tpope/vim-surround'                 "成对的符号增删改
             Plug 'jiangmiao/auto-pairs'               "自动括号补全
             Plug 'Yggdroot/LeaderF'
@@ -68,15 +67,6 @@ call plug#begin('~/.vim/bundle')
             Plug 'easymotion/vim-easymotion'        " 快速跳转
             Plug 'mbbill/undotree',{ 'on': 'UndotreeToggle' } "撤销恢复树
             Plug 'Yggdroot/indentLine'   " 缩进对齐线
-        endif
-    " }
-
-    " Writing {
-        if count(g:spf13_bundle_groups, 'writing')
-            Plug 'reedes/vim-litecorrect'
-            Plug 'reedes/vim-textobj-sentence'
-            Plug 'reedes/vim-textobj-quote'
-            Plug 'reedes/vim-wordy'
         endif
     " }
 
@@ -101,19 +91,6 @@ call plug#begin('~/.vim/bundle')
    " Python {
         if count(g:spf13_bundle_groups, 'python')
             "Plug 'python-mode/python-mode', { 'branch': 'develop', 'for': ['py','python'] }
-        endif
-    " }
-
-    " Javascript {
-        if count(g:spf13_bundle_groups, 'javascript')
-            Plug 'pangloss/vim-javascript'
-            Plug 'kchmck/vim-coffee-script'
-        endif
-    " }
-
-    " HTML {
-        if count(g:spf13_bundle_groups, 'html')
-            Plug 'mattn/emmet-vim'
         endif
     " }
 " }

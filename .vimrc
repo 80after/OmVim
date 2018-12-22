@@ -75,7 +75,7 @@
 " }
 
 " General {
-        set background=dark         " Assume a dark background
+        set background=light         " Assume a dark background
 
         " Allow to trigger background
         function! ToggleBG()
@@ -103,11 +103,9 @@
         endif
 
         set autowrite                       " Automatically write a file when leaving a modified buffer
-        set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
         set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
         set virtualedit=onemore             " Allow for cursor beyond last character
         set history=100                     " Store a ton of history (default is 20)
-        set spell                           " Spell checking on
         set hidden                          " Allow buffer switching without saving
         set iskeyword-=.                    " '.' is an end of word designator
         set iskeyword-=#                    " '#' is an end of word designator
@@ -163,10 +161,7 @@
             let g:solarized_visibility="normal"
             color solarized              " Load a colorscheme
         endif
-
-        if  filereadable(expand("~/.vim/bundle/gruvbox/colors/gruvbox.vim"))
-            color gruvbox              " Load a colorscheme
-        endif
+            colorscheme hybrid              " Load a colorscheme
 
         set noshowmode                  " Hidden the current mode
         set cursorline                  " Highlight current line
@@ -290,26 +285,6 @@
             vnoremap ^ :<C-U>call WrapRelativeMotion("^", 1)<CR>
         endif
 
-        " Stupid shift key fixes
-        if !exists('g:spf13_no_keyfixes')
-            if has("user_commands")
-                command! -bang -nargs=* -complete=file E e<bang> <args>
-                command! -bang -nargs=* -complete=file W w<bang> <args>
-                command! -bang -nargs=* -complete=file Wq wq<bang> <args>
-                command! -bang -nargs=* -complete=file WQ wq<bang> <args>
-                command! -bang Wa wa<bang>
-                command! -bang WA wa<bang>
-                command! -bang Q q<bang>
-                command! -bang QA qa<bang>
-                command! -bang Qa qa<bang>
-            endif
-
-            cmap Tabe tabe
-        endif
-
-        " Yank from the cursor to the end of the line, to be consistent with C and D.
-        nnoremap Y y$
-
         " Code folding options
         nmap <leader>f0 :set foldlevel=0<CR>
         nmap <leader>f1 :set foldlevel=1<CR>
@@ -365,12 +340,11 @@
                 let g:Lf_StlColorscheme = 'powerline'
                 let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 
-                let g:Lf_ShortcutF = '<c-p>'
-                let g:Lf_ShortcutB = '<m-n>'
-                noremap <c-n> :LeaderfMru<cr>
-                noremap <m-p> :LeaderfFunction!<cr>
-                noremap <m-n> :LeaderfBuffer<cr>
-                noremap <m-m> :LeaderfTag<cr>
+                let g:Lf_ShortcutF = '<leader>p'
+                noremap <leader>m :LeaderfMru<cr>
+                noremap <leader>f :LeaderfFunction!<cr>
+                noremap <leader>b :LeaderfBuffer<cr>
+                noremap <leader>t :LeaderfTag<cr>
 
             endif
        "}
@@ -438,12 +412,8 @@
             if executable('ctags')
                 let g:gutentags_modules += ['ctags']
                 set tags=./.tags;,.tags  "set tags=./tags;/,~/.vimtags
-                " Make tags placed in .git/tags file available in all levels of a repository
-                " let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-                " if gitroot != ''
-                "    let &tags = &tags . ',' . gitroot . '/.git/tags'
-                " endif
             endif
+            
             if executable('gtags-cscope') && executable('gtags')
                 let g:gutentags_modules += ['gtags_cscope']
             endif
@@ -468,28 +438,6 @@
             autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
             noremap <leader>u :PreviewScroll -1<cr>  " 往上滚动预览窗口
             noremap <leader>d :PreviewScroll +1<cr>  " 往下滚动预览窗口
-        endif
-    " }
-
-    " TextObj Sentence {
-        if count(g:spf13_bundle_groups, 'writing')
-            augroup textobj_sentence
-              autocmd!
-              autocmd FileType markdown call textobj#sentence#init()
-              autocmd FileType textile call textobj#sentence#init()
-              autocmd FileType text call textobj#sentence#init()
-            augroup END
-        endif
-    " }
-
-    " TextObj Quote {
-        if count(g:spf13_bundle_groups, 'writing')
-            augroup textobj_quote
-                autocmd!
-                autocmd FileType markdown call textobj#quote#init()
-                autocmd FileType textile call textobj#quote#init()
-                autocmd FileType text call textobj#quote#init({'educate': 0})
-            augroup END
         endif
     " }
 
@@ -534,11 +482,6 @@
 
     " PyMode {
         if isdirectory(expand("~/.vim/bundle/python-mode"))
-            let g:pymode_python = 'python3'
-            let g:pymode_lint_checkers = ['pyflakes']
-            let g:pymode_trim_whitespaces = 0
-            let g:pymode_options = 0
-            let g:pymode_rope = 0
         endif
     " }
 
@@ -553,7 +496,7 @@
             "设置全局Python路径
             let g:ycm_server_python_interpreter='/usr/bin/python3'
             " remap Ultisnips for compatibility for YCM
-            let g:UltiSnipsExpandTrigger = '<C-j>'
+            let g:UltiSnipsExpandTrigger = '<C-m-j>'
             let g:UltiSnipsJumpForwardTrigger = '<C-j>'
             let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 
