@@ -111,10 +111,6 @@
         set iskeyword-=#                    " '#' is an end of word designator
         set iskeyword-=-                    " '-' is an end of word designator
 
-        " Instead of reverting the cursor to the last position in the buffer, we
-        " set it to the first line when editing a git commit message
-        au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-
         " http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
         " Restore cursor to file position in previous editing session
         " To disable this, add the following to your .vimrc.before.local file:
@@ -137,8 +133,8 @@
         set backup                  " Backups are nice ...
         if has('persistent_undo')
             set undofile                " So is persistent undo ...
-            set undolevels=1000         " Maximum number of changes that can be undone
-            set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+            set undolevels=100         " Maximum number of changes that can be undone
+            set undoreload=1000        " Maximum number lines to save for undo on a buffer reload
         endif
 
         " To disable views add the following to your .vimrc.before.local file:
@@ -154,7 +150,7 @@
 " }
 
 " Vim UI {
-        if  filereadable(expand("~/.vim/bundle/vim-color-solarized/colors/solarized.vim"))
+        if  filereadable(expand("~/.vim/bundle/vim-"))
             let g:solarized_termcolors=256
             let g:solarized_termtrans=1
             let g:solarized_contrast="normal"
@@ -168,23 +164,11 @@
 
         highlight clear SignColumn      " SignColumn should match background
         highlight clear LineNr          " Current line number row will have same background color in relative mode
-        "highlight clear CursorLineNr    " Remove highlight color from current line number
 
         if has('cmdline_info')
             set ruler                   " Show the ruler
             set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
             set showcmd                 " Show partial commands in status line and
-        endif
-
-        if has('statusline')
-            set laststatus=2
-
-            " Broken down into easily includeable segments
-            set statusline=%<%f\                     " Filename
-            set statusline+=%w%h%m%r                 " Options
-            set statusline+=\ [%{&ff}/%Y]            " Filetype
-            set statusline+=\ [%{getcwd()}]          " Current dir
-            set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
         endif
 
         set backspace=indent,eol,start  " Backspace for dummies
@@ -545,11 +529,11 @@
         set guioptions-=T           " Remove the toolbar
         set lines=40                " 40 lines of text instead of 24
         if !exists("g:spf13_no_big_font")
-            if LINUX() && has("gui_running")
+            if LINUX()
                 set guifont=Andale\ Mono\ Regular\ 12,Menlo\ Regular\ 11,Consolas\ Regular\ 12,Courier\ New\ Regular\ 14
-            elseif OSX() && has("gui_running")
+            elseif OSX()
                 set guifont=Andale\ Mono\ Regular:h12,Menlo\ Regular:h11,Consolas\ Regular:h12,Courier\ New\ Regular:h14
-            elseif WINDOWS() && has("gui_running")
+            elseif WINDOWS()
                 set guifont=Andale_Mono:h10,Menlo:h10,Consolas:h10,Courier_New:h10
             endif
         endif
