@@ -1,32 +1,5 @@
 " Modeline and Notes {
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-"
-"                    __ _ _____              _
-"         ___ _ __  / _/ |___ /      __   __(_)_ __ ___
-"        / __| '_ \| |_| | |_ \ _____\ \ / /| | '_ ` _ \
-"        \__ \ |_) |  _| |___) |_____|\ V / | | | | | | |
-"        |___/ .__/|_| |_|____/        \_/  |_|_| |_| |_|
-"            |_|
-"
-"   This is the personal .vimrc file of Steve Francia.
-"   While much of it is beneficial for general use, I would
-"   recommend picking out the parts you want and understand.
-"
-"   You can find me at http://spf13.com
-"
-"   Copyright 2014 Steve Francia
-"
-"   Licensed under the Apache License, Version 2.0 (the "License");
-"   you may not use this file except in compliance with the License.
-"   You may obtain a copy of the License at
-"
-"       http://www.apache.org/licenses/LICENSE-2.0
-"
-"   Unless required by applicable law or agreed to in writing, software
-"   distributed under the License is distributed on an "AS IS" BASIS,
-"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-"   See the License for the specific language governing permissions and
-"   limitations under the License.
 " }
 
 " Environment {
@@ -55,13 +28,6 @@
         " across (heterogeneous) systems easier.
         if WINDOWS()
           set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-        endif
-    " }
-
-    " Arrow Key Fix {
-        " https://github.com/spf13/spf13-vim/issues/780
-        if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
-            inoremap <silent> <C-[>OC <RIGHT>
         endif
     " }
 " }
@@ -150,26 +116,16 @@
 " }
 
 " Vim UI {
-        if  filereadable(expand("~/.vim/bundle/vim-"))
-            let g:solarized_termcolors=256
-            let g:solarized_termtrans=1
-            let g:solarized_contrast="normal"
-            let g:solarized_visibility="normal"
-            color solarized              " Load a colorscheme
-        endif
+        if  filereadable(expand("~/.vim/bundle/vim-hybrid/colors/hybrid.vim"))
             colorscheme hybrid              " Load a colorscheme
+        endif
 
+        set showcmd                 " Show partial commands in status line and
         set noshowmode                  " Hidden the current mode
         set cursorline                  " Highlight current line
 
         highlight clear SignColumn      " SignColumn should match background
         highlight clear LineNr          " Current line number row will have same background color in relative mode
-
-        if has('cmdline_info')
-            set ruler                   " Show the ruler
-            set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " A ruler on steroids
-            set showcmd                 " Show partial commands in status line and
-        endif
 
         set backspace=indent,eol,start  " Backspace for dummies
         set linespace=0                 " No extra spaces between rows
@@ -201,9 +157,8 @@
         set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
         set splitright                  " Puts new vsplit windows to the right of the current
         set splitbelow                  " Puts new split windows to the bottom of the current
-        "set matchpairs+=<:>             " Match, to be used with %
         set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
-        autocmd FileType c,cpp,go,javascript,python,xml,sql autocmd BufWritePre <buffer> if !exists('g:spf13_keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
+        autocmd FileType c,cpp,javascript,python,xml,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 " }
 
 " Key (re)Mappings {
@@ -380,9 +335,10 @@
             "<leader>ci	Find files #including the file name under cursor
             "<leader>ca	Find places where current symbol is assigned
 
-            "let g:gutentags_define_advanced_commands = 1
+            let g:gutentags_define_advanced_commands = 1
             "自动载入ctags gtags
-            let $GTAGSLABEL = 'native-pygments'
+            "let $GTAGSLABEL = 'native-pygments'
+            let $GTAGSLABEL = 'native'
             let $GTAGSCONF = '/usr/local/share/gtags/gtags.conf'
 
             " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
@@ -519,6 +475,16 @@
             let g:indent_guides_guide_size = 1
             let g:indent_guides_enable_on_vim_startup = 1
         endif
+    " }
+    
+    " markdown {
+        "if isdirectory(expand("~/.vim/bundle/vim-indent-guides/"))
+            let g:mkdp_path_to_chrome = "/opt/google/chrome/chrome --no-sandbox"
+            nmap <silent> <F9>  <Plug>MarkdownPreview<CR>        " 普通模式
+            imap <silent> <F9>  <Plug>MarkdownPreview<CR>        " 插入模式
+            nmap <silent> <F10> <Plug>StopMarkdownPreview<CR>    " 普通模式
+            imap <silent> <F10> <Plug>StopMarkdownPreview<CR>    " 插入模式
+        "endif
     " }
 " }
 

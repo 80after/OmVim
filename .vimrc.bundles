@@ -1,24 +1,5 @@
 " Modeline and Notes {
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=0 foldmethod=marker spell:
-"
-"                    __ _ _____              _
-"         ___ _ __  / _/ |___ /      __   __(_)_ __ ___
-"        / __| '_ \| |_| | |_ \ _____\ \ / /| | '_ ` _ \
-"        \__ \ |_) |  _| |___) |_____|\ V / | | | | | | |
-"        |___/ .__/|_| |_|____/        \_/  |_|_| |_| |_|
-"            |_|
-"
-"   This is the personal .vimrc.bundles file of Steve Francia.
-"   While much of it is beneficial for general use, I would
-"   recommend picking out the parts you want and understand.
-"
-"   This file imports the various plugins of spf13. If you
-"   wish to alter which groups are imported, see vimrc.before.
-"   If you wish to add or remove individual bundles, create
-"   ~/.vimrc.bundles.local and `Plug` or `UnPlug` as needed
-"   from there.
-"
-"   You can find me at http://spf13.com
 " }
 
 " Environment {
@@ -50,7 +31,7 @@
 call plug#begin('~/.vim/bundle')
 
 " Plugs {
-        let g:spf13_bundle_groups=['general' , 'programming' , 'python',  'youcompleteme',]
+        let g:spf13_bundle_groups=['general' , 'programming' , 'python',  'youcompleteme']
 
     " To override all the included bundles, add the following to your
     " .vimrc.bundles.local file:
@@ -67,12 +48,13 @@ call plug#begin('~/.vim/bundle')
             Plug 'easymotion/vim-easymotion'        " 快速跳转
             Plug 'mbbill/undotree',{ 'on': 'UndotreeToggle' } "撤销恢复树
             Plug 'Yggdroot/indentLine'   " 缩进对齐线
+            Plug 'iamcco/markdown-preview.vim'
         endif
     " }
 
     " General Programming {
         if count(g:spf13_bundle_groups, 'programming')
-            Plug 'w0rp/ale',{ 'on': 'ALEToggle' }   " 实时语法检查
+            Plug 'w0rp/ale',{ 'on': 'ALEToggle' }   " 实时语法检查,代码格式化
             Plug 'ludovicchabant/vim-gutentags'     " tags管理
             Plug 'skywind3000/gutentags_plus'       " 项目自动切换tags
             Plug 'skywind3000/vim-preview'          " 预览
@@ -90,7 +72,7 @@ call plug#begin('~/.vim/bundle')
 
    " Python {
         if count(g:spf13_bundle_groups, 'python')
-            "Plug 'python-mode/python-mode', { 'branch': 'develop', 'for': ['py','python'] }
+            "Plug 'python-mode/python-mode', { 'branch': 'develop'}
         endif
     " }
 " }
