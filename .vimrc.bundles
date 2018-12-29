@@ -48,7 +48,6 @@ call plug#begin('~/.vim/bundle')
             Plug 'easymotion/vim-easymotion'        " 快速跳转
             Plug 'mbbill/undotree',{ 'on': 'UndotreeToggle' } "撤销恢复树
             Plug 'Yggdroot/indentLine'   " 缩进对齐线
-            Plug 'iamcco/markdown-preview.vim'
         endif
     " }
 
@@ -72,7 +71,7 @@ call plug#begin('~/.vim/bundle')
 
    " Python {
         if count(g:spf13_bundle_groups, 'python')
-            "Plug 'python-mode/python-mode', { 'branch': 'develop'}
+        
         endif
     " }
 " }

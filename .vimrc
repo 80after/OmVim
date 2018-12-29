@@ -19,7 +19,7 @@
     " Basics {
         set nocompatible        " Must be first line
         if !WINDOWS()
-            set shell=/bin/sh
+            set shell=/bin/bash
         endif
     " }
 
@@ -58,7 +58,6 @@
         syntax on                   " Syntax highlighting
         set mouse=a                 " Automatically enable mouse usage
         set mousehide               " Hide the mouse cursor while typing
-        scriptencoding utf-8
 
         if has('clipboard')
             if has('unnamedplus')  " When possible use + register for copy-paste
@@ -73,46 +72,35 @@
         set virtualedit=onemore             " Allow for cursor beyond last character
         set history=100                     " Store a ton of history (default is 20)
         set hidden                          " Allow buffer switching without saving
-        set iskeyword-=.                    " '.' is an end of word designator
-        set iskeyword-=#                    " '#' is an end of word designator
-        set iskeyword-=-                    " '-' is an end of word designator
 
         " http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
         " Restore cursor to file position in previous editing session
         " To disable this, add the following to your .vimrc.before.local file:
-        "   let g:spf13_no_restore_cursor = 1
-        if !exists('g:spf13_no_restore_cursor')
-            function! ResCur()
-                if line("'\"") <= line("$")
-                    silent! normal! g`"
-                    return 1
-                endif
-            endfunction
+        function! ResCur()
+            if line("'\"") <= line("$")
+                silent! normal! g`"
+                return 1
+            endif
+        endfunction
 
-            augroup resCur
-                autocmd!
-                autocmd BufWinEnter * call ResCur()
-            augroup END
-        endif
+        augroup resCur
+            autocmd!
+            autocmd BufWinEnter * call ResCur()
+        augroup END
 
         " Setting up the directories {
         set backup                  " Backups are nice ...
         if has('persistent_undo')
-            set undofile                " So is persistent undo ...
+            set undofile               " So is persistent undo ...
             set undolevels=100         " Maximum number of changes that can be undone
             set undoreload=1000        " Maximum number lines to save for undo on a buffer reload
         endif
 
-        " To disable views add the following to your .vimrc.before.local file:
-        "   let g:spf13_no_views = 1
-        if !exists('g:spf13_no_views')
-            " Add exclusions to mkview and loadview
-            " eg: *.*, svn-commit.tmp
-            let g:skipview_files = [
-                \ '\[example pattern\]'
-                \ ]
-        endif
-        " }
+        " Add exclusions to mkview and loadview
+        " eg: *.*, svn-commit.tmp
+        let g:skipview_files = [
+            \ '\[example pattern\]'
+            \ ]
 " }
 
 " Vim UI {
@@ -133,7 +121,6 @@
         set showmatch                   " Show matching brackets/parenthesis
         set incsearch                   " Find as you type search
         set hlsearch                    " Highlight search terms
-        set winminheight=0              " Windows can be 0 line high
         set ignorecase                  " Case insensitive search
         set smartcase                   " Case sensitive when uc present
         set wildmenu                    " Show list instead of just completing
@@ -171,59 +158,6 @@
         let s:spf13_edit_config_mapping = '<leader>ev'
         let s:spf13_apply_config_mapping = '<leader>sv'
 
-        " Easier moving in tabs and windows
-        " The lines conflict with the default digraph mapping of <C-K>
-        " If you prefer that functionality, add the following to your
-        " .vimrc.before.local file:
-        "   let g:spf13_no_easyWindows = 1
-        map <C-J> <C-W>j<C-W>_
-        map <C-K> <C-W>k<C-W>_
-        map <C-L> <C-W>l<C-W>_
-        map <C-H> <C-W>h<C-W>_
-
-        " Wrapped lines goes down/up to next row, rather than next line in file.
-        noremap j gj
-        noremap k gk
-
-        " End/Start of line motion keys act relative to row/wrap width in the
-        " presence of `:set wrap`, and relative to line for `:set nowrap`.
-        " Default vim behaviour is to act relative to text line in both cases
-        " If you prefer the default behaviour, add the following to your
-        " .vimrc.before.local file:
-        "   let g:spf13_no_wrapRelMotion = 1
-        if !exists('g:spf13_no_wrapRelMotion')
-            " Same for 0, home, end, etc
-            function! WrapRelativeMotion(key, ...)
-                let vis_sel=""
-                if a:0
-                    let vis_sel="gv"
-                endif
-                if &wrap
-                    execute "normal!" vis_sel . "g" . a:key
-                else
-                    execute "normal!" vis_sel . a:key
-                endif
-            endfunction
-
-            " Map g* keys in Normal, Operator-pending, and Visual+select
-            noremap $ :call WrapRelativeMotion("$")<CR>
-            noremap <End> :call WrapRelativeMotion("$")<CR>
-            noremap 0 :call WrapRelativeMotion("0")<CR>
-            noremap <Home> :call WrapRelativeMotion("0")<CR>
-            noremap ^ :call WrapRelativeMotion("^")<CR>
-            " Overwrite the operator pending $/<End> mappings from above
-            " to force inclusive motion with :execute normal!
-            onoremap $ v:call WrapRelativeMotion("$")<CR>
-            onoremap <End> v:call WrapRelativeMotion("$")<CR>
-            " Overwrite the Visual+select mode mappings from above
-            " to ensure the correct vis_sel flag is passed to function
-            vnoremap $ :<C-U>call WrapRelativeMotion("$", 1)<CR>
-            vnoremap <End> :<C-U>call WrapRelativeMotion("$", 1)<CR>
-            vnoremap 0 :<C-U>call WrapRelativeMotion("0", 1)<CR>
-            vnoremap <Home> :<C-U>call WrapRelativeMotion("0", 1)<CR>
-            vnoremap ^ :<C-U>call WrapRelativeMotion("^", 1)<CR>
-        endif
-
         " Code folding options
         nmap <leader>f0 :set foldlevel=0<CR>
         nmap <leader>f1 :set foldlevel=1<CR>
@@ -238,27 +172,8 @@
 
         " Most prefer to toggle search highlighting rather than clear the current
         " search results. To clear search highlighting rather than toggle it on
-        " and off, add the following to your .vimrc.before.local file:
-        "   let g:spf13_clear_search_highlight = 1
-        if exists('g:spf13_clear_search_highlight')
-            nmap <silent> <leader>/ :nohlsearch<CR>
-        else
-            nmap <silent> <leader>/ :set invhlsearch<CR>
-        endif
-
-        " Visual shifting (does not exit Visual mode)
-        vnoremap < <gv
-        vnoremap > >gv
-
-        " Allow using the repeat operator with a visual selection (!)
-        " http://stackoverflow.com/a/8064607/127816
-        vnoremap . :normal .<CR>
-
-        " Some helpers to edit mode
-        map <leader>ew :e %%
-        map <leader>es :sp %%
-        map <leader>ev :vsp %%
-        map <leader>et :tabe %%
+        " and off
+        nmap <silent> <leader>/ :set invhlsearch<CR>
 
         " FIXME: Revert this f70be548
         " fullscreen mode for GVIM and Terminal, need 'wmctrl' in you PATH
@@ -420,11 +335,6 @@
         endif
     " }
 
-    " PyMode {
-        if isdirectory(expand("~/.vim/bundle/python-mode"))
-        endif
-    " }
-
     " YouCompleteMe {
         if count(g:spf13_bundle_groups, 'youcompleteme')
             let g:acp_enableAtStartup = 0
@@ -432,7 +342,7 @@
             let g:ycm_confirm_extra_conf=0
             " enable completion from tags
             let g:ycm_collect_identifiers_from_tags_files = 1
-            "let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
+            let g:ycm_global_ycm_extra_conf = '~/.OmVim/ycm_conf/c++_standard/.ycm_extra_conf.py'
             "设置全局Python路径
             let g:ycm_server_python_interpreter='/usr/bin/python3'
             " remap Ultisnips for compatibility for YCM
@@ -475,16 +385,6 @@
             let g:indent_guides_guide_size = 1
             let g:indent_guides_enable_on_vim_startup = 1
         endif
-    " }
-    
-    " markdown {
-        "if isdirectory(expand("~/.vim/bundle/vim-indent-guides/"))
-            let g:mkdp_path_to_chrome = "/opt/google/chrome/chrome --no-sandbox"
-            nmap <silent> <F9>  <Plug>MarkdownPreview<CR>        " 普通模式
-            imap <silent> <F9>  <Plug>MarkdownPreview<CR>        " 插入模式
-            nmap <silent> <F10> <Plug>StopMarkdownPreview<CR>    " 普通模式
-            imap <silent> <F10> <Plug>StopMarkdownPreview<CR>    " 插入模式
-        "endif
     " }
 " }
 
